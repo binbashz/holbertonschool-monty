@@ -1,4 +1,12 @@
 #include "monty.h"
+
+/**
+ * command_generator - add node end singly linked list of parsed commands.
+ * @head: head of the linked list
+ * @s: command to be parsed
+ * @i: line number of the script
+ * Return: new node, NULL if it fails.
+ */
 comandos *command_generator(comandos **head, char *s, int i); 
 {
 	comandos *temp = *head, *new = NULL;
@@ -24,6 +32,18 @@ comandos *command_generator(comandos **head, char *s, int i);
 			return (NULL);
 		}
 	}
-
-	return (0);
+	else
+	new->comandos[1] = NULL;
+	new->line_number = i;
+	new->next = NULL;
+	new->mode = 0;
+	if (!(*head))
+	{
+		*head = new;
+		return (new);
+	}
+	for (; temp->next; temp = temp->next)
+		continue;
+	temp->next = new;
+	return (new);
 }
