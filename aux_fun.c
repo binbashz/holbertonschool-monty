@@ -48,7 +48,12 @@ comandos *command_generator(comandos **head, char *s, int i);
 	return (new);
 }
 
-
+/**
+ * hash_finder - Function that find # in the line.
+ * @s: line to read
+ *
+ * Return: 1 if find # and 0 if not find.
+ */
 int hash_finder(char **s)
 {
 	int i = 0;
