@@ -1,4 +1,4 @@
-
+#include "monty.h"
 
 /**
  * monty_push - function that pusher an element to the stack
@@ -28,6 +28,8 @@ void monty_push(stack_t **stack, unsigned int line_number)
 	if (isint(head->command_argument[1]))    /* checkear isint !! */
 	{
 		dprintf(STDERR_FILENO, "L%d: usage: push integer\n", line_number);
+		free_all(stack);
+		free(new_node);
 		exit(EXIT_FAILURE);
 	}
 	new_node->n = atoi(head->[1]);
@@ -44,4 +46,42 @@ void monty_push(stack_t **stack, unsigned int line_number)
 	new_node->prev = temp;
 }
 
+
+
+/**
+ * select_ops - Function to execute options
+ *
+ * @stack: address of double linked list
+ *
+ */
+
+void select_ops(stack_t **stack)
+{
+	int i = 0;
+	instruction_t options[] = {
+		{"push", monty_push},
+		{"pall", },
+		{"pint", },
+		{"pop", },
+	
+		{NULL, NULL}
+	};
+
+	while (options[i].opcode)
+	{
+		if (!strcmp(options[i].opcode, head->command_argument[0]))
+		{
+			(*options[i].f)(stack, head->line_number);
+			break;
+		}
+		i++;
+	}
+	if (!options[i].opcode)
+	{
+		dprintf(STDERR_FILENO, "L%d: unknown instruction %s\n",
+				head->line_number, head->command_argument[0]);
+		freell(stack);
+		exit(EXIT_FAILURE);
+	}
+}
 
