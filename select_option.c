@@ -1,4 +1,4 @@
-#include "monty.h"
+
 
 /**
  * monty_push - function that pusher an element to the stack
@@ -63,7 +63,11 @@ void select_ops(stack_t **stack)
 		{"pall", },
 		{"pint", },
 		{"pop", },
-	
+		{"swap", },
+		{"add", },
+		{"nop", },
+		{"stack", },
+		{"queue", },
 		{NULL, NULL}
 	};
 
@@ -85,3 +89,31 @@ void select_ops(stack_t **stack)
 	}
 }
 
+
+
+
+
+
+/**
+ * free_all - Function free all linked list
+ *
+ * @stack: address of double linked list
+ *
+ */
+
+
+
+void free_all(stack_t **stack)
+{
+	stack_t *temp = NULL;
+	comandos *temp2 = NULL;
+
+	for (; *stack; *stack = (*stack)->next, free(temp))
+		temp = *stack;
+	for (; head; head = head->next, free(temp2))
+	{
+		temp2 = head;
+		free(head->command_argument[1]);
+		free(head->command_argument[0]);
+	}
+}
