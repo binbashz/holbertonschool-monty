@@ -48,6 +48,10 @@ typedef struct commands
 
 extern comandos *head;
 void monty_push(stack_t **stack, unsigned int line_number);
+void monty_push(stack_t **stack, unsigned int line_number);
+int hash_finder(char **s);
+void free_all(stack_t **stack);
+void select_ops(stack_t **stack);
 
 
 #endif
