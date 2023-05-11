@@ -1,5 +1,5 @@
 #include "monty.h"
-                                          
+                    
 comandos *head = NULL;
 
 /**
@@ -48,16 +48,20 @@ int main(int argc, char **argv)
 		s[r - 1] = '\0';
 		if (!checking_blank(s) || hash_finder(&s) || !(*s))
 			continue;
-		
+		if (!command_generator(&head, s, i))
+		{
+			dprintf(STDERR_FILENO, "Error: malloc failed\n");
+			free_all(&stk);
+			exit(EXIT_FAILURE);
+		}
 	}
 	free(s), fclose(f);
 	for (; head; free(temp2->command_argument[1]), free(temp2->command_argument[0]), free(temp2))
 	{
 		temp2 = head;
-		select_ops(&stk);
-		head = head->next;
+		
+		
 	}
-	free_all(&stk);
+	
 	return (EXIT_SUCCESS);
 }
-
