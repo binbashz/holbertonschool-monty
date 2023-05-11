@@ -47,3 +47,18 @@ comandos *command_generator(comandos **head, char *s, int i);
 	temp->next = new;
 	return (new);
 }
+
+
+int hash_finder(char **s)
+{
+	int i = 0;
+
+	for (; (*s)[i] && ((*s)[i] == ' ' || (*s)[i] == '\t'); i++)
+		;
+	if ((*s)[i] == '#')
+		return (1);
+	for (i = 0; (*s)[i] && (*s)[i] != '#'; i++)
+		;
+	(*s)[i] = '\0';
+	return (0);
+}
