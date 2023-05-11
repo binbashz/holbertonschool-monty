@@ -1,3 +1,5 @@
+
+
 /**
  * monty_push - function that pusher an element to the stack
  *
@@ -12,22 +14,20 @@ void monty_push(stack_t **stack, unsigned int line_number)
 
 	if (head->mode)
 	{
-		monty_pushq(stack, line_number); /* checkear funcion que falta para acceder*/
+		monty_pushq(stack, line_number); /* checkear monty_pushq o m_pushq*/
 		return;
 	}
 	new_node = malloc(sizeof(stack_t));
 	if (!new_node)
 	{
 		dprintf(STDERR_FILENO, "Error: malloc failed\n");
-		
+		freell(stack);
 		exit(EXIT_FAILURE);
 	}
 
 	if (isint(head->command_argument[1]))    /* checkear isint !! */
 	{
 		dprintf(STDERR_FILENO, "L%d: usage: push integer\n", line_number);
-		free_all(stack);
-		free(new_node);
 		exit(EXIT_FAILURE);
 	}
 	new_node->n = atoi(head->[1]);
@@ -38,6 +38,10 @@ void monty_push(stack_t **stack, unsigned int line_number)
 		*stack = new_node;
 		return;
 	}
-
+	while (temp->next)
+		temp = temp->next;
+	temp->next = new_node;
+	new_node->prev = temp;
 }
+
 
