@@ -1,5 +1,5 @@
 #include "monty.h"
-                    
+                                          
 comandos *head = NULL;
 
 /**
@@ -59,9 +59,9 @@ int main(int argc, char **argv)
 	for (; head; free(temp2->command_argument[1]), free(temp2->command_argument[0]), free(temp2))
 	{
 		temp2 = head;
-		
-		
+		select_ops(&stk);
+		head = head->next;
 	}
-	
+	free_all(&stk);
 	return (EXIT_SUCCESS);
 }
