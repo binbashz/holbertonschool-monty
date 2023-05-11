@@ -1,6 +1,6 @@
 #include "monty.h"
-                                          
-comandos *head = NULL;
+
+	comandos *head = NULL;
 
 /**
  * checking_blank - checks for blank spaces
