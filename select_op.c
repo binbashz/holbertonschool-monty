@@ -31,7 +31,7 @@ void monty_push(stack_t **stack, unsigned int line_number)
 		free(new_node);
 		exit(EXIT_FAILURE);
 	}
-	new_node->n = atoi(head->[1]);
+	new_node->n = atoi(head->command_argument[1]);
 	new_node->next = NULL;
 	if (!(*stack))
 	{
