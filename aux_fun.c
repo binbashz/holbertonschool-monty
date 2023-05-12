@@ -1,69 +1,67 @@
 #include "monty.h"
+                                          
+comandos *head = NULL;
 
 /**
- * command_generator - add node end singly linked list of parsed commands.
- * @head: head of the linked list
- * @s: command to be parsed
- * @i: line number of the script
- * Return: new node, NULL if it fails.
+ * checking_blank - checks for blank spaces
+ * @s: source string
+ * Return: 0 if successful, 1 otherwise
  */
-comandos *command_generator(comandos **head, char *s, int i);
+int checking_blank(char *s)
 {
-	comandos *temp = *head, *new = NULL;
-	char *str;
+	size_t i = 0;
 
-	new = malloc(sizeof(comandos));
-	if (!new)
-		return (NULL);
-	new->comandos[0] = strdup(strtok(s, " \t"));
-	if (!(new->comandos[0]))
+	for (; s[i] && (s[i] == ' ' || s[i] == '\t'); i++)
+		;
+	if (s[i] == '\0')
+		return (0);
+	return (1);
+}
+/**
+ * main - entry point, evaluates path name.
+ * @argc: number of arguments.
+ * @argv: array of arguments.
+ * Return: EXIT_SUCCESS, EXIT_FAILURE.
+ */
+int main(int argc, char **argv)
+{
+	FILE *f;
+	char *s = NULL;
+	size_t n, i;
+	int r;
+	stack_t *stk = NULL;
+	comandos *temp2;
+
+	if (argc != 2)
 	{
-		free(new);
-		return (NULL);
+		dprintf(STDERR_FILENO, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
 	}
-	str = strtok(NULL, " \t");
-	if (str)
+	f = fopen(argv[1], "r");
+	if (!f)
 	{
-		new->comandos[1] = strdup(str);
-		if (!(new->comandos[1]))
+		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	for (i = 1; (r = getline(&s, &n, f)) != EOF; i++)
+	{
+		s[r - 1] = '\0';
+		if (!checking_blank(s) || hash_finder(&s) || !(*s))
+			continue;
+		if (!command_generator(&head, s, i))
 		{
-			free(new->comandos[1]);
-			free(new);
-			return (NULL);
+			dprintf(STDERR_FILENO, "Error: malloc failed\n");
+			free_all(&stk);
+			exit(EXIT_FAILURE);
 		}
 	}
-	else
-	new->comandos[1] = NULL;
-	new->line_number = i;
-	new->next = NULL;
-	new->mode = 0;
-	if (!(*head))
+	free(s), fclose(f);
+	for (; head; free(temp2->command_argument[1]), free(temp2->command_argument[0]), free(temp2))
 	{
-		*head = new;
-		return (new);
+		temp2 = head;
+		select_ops(&stk);
+		head = head->next;
 	}
-	for (; temp->next; temp = temp->next)
-		continue;
-	temp->next = new;
-	return (new);
-}
-
-/**
- * hash_finder - Function that find # in the line.
- * @s: line to read
- *
- * Return: 1 if find # and 0 if not find.
- */
-int hash_finder(char **s)
-{
-	int i = 0;
-
-	for (; (*s)[i] && ((*s)[i] == ' ' || (*s)[i] == '\t'); i++)
-		;
-	if ((*s)[i] == '#')
-		return (1);
-	for (i = 0; (*s)[i] && (*s)[i] != '#'; i++)
-		;
-	(*s)[i] = '\0';
-	return (0);
+	free_all(&stk);
+	return (EXIT_SUCCESS);
 }

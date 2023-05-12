@@ -1,119 +1,69 @@
-
+#include "monty.h"
 
 /**
- * monty_push - function that pusher an element to the stack
- *
- * @stack: address of double linked list
- * @line_number: number of line
- *
+ * command_generator - add node end singly linked list of parsed commands.
+ * @head: head of the linked list
+ * @s: command to be parsed
+ * @i: line number of the script
+ * Return: new node, NULL if it fails.
  */
-
-void monty_push(stack_t **stack, unsigned int line_number)
+comandos *command_generator(comandos **head, char *s, int i);
 {
-	stack_t *new_node = NULL, *temp = *stack;
+	comandos *temp = *head, *new = NULL;
+	char *str;
 
-	if (head->mode)
+	new = malloc(sizeof(comandos));
+	if (!new)
+		return (NULL);
+	new->comandos[0] = strdup(strtok(s, " \t"));
+	if (!(new->comandos[0]))
 	{
-		monty_pushq(stack, line_number); /* checkear monty_pushq o m_pushq*/
-		return;
+		free(new);
+		return (NULL);
 	}
-	new_node = malloc(sizeof(stack_t));
-	if (!new_node)
+	str = strtok(NULL, " \t");
+	if (str)
 	{
-		dprintf(STDERR_FILENO, "Error: malloc failed\n");
-		freell(stack);
-		exit(EXIT_FAILURE);
+		new->comandos[1] = strdup(str);
+		if (!(new->comandos[1]))
+		{
+			free(new->comandos[1]);
+			free(new);
+			return (NULL);
+		}
 	}
-
-	if (isint(head->command_argument[1]))    /* checkear isint !! */
+	else
+	new->comandos[1] = NULL;
+	new->line_number = i;
+	new->next = NULL;
+	new->mode = 0;
+	if (!(*head))
 	{
-		dprintf(STDERR_FILENO, "L%d: usage: push integer\n", line_number);
-		free_all(stack);
-		free(new_node);
-		exit(EXIT_FAILURE);
+		*head = new;
+		return (new);
 	}
-	new_node->n = atoi(head->[1]);
-	new_node->next = NULL;
-	if (!(*stack))
-	{
-		new_node->prev = *stack;
-		*stack = new_node;
-		return;
-	}
-	while (temp->next)
-		temp = temp->next;
-	temp->next = new_node;
-	new_node->prev = temp;
+	for (; temp->next; temp = temp->next)
+		continue;
+	temp->next = new;
+	return (new);
 }
 
-
-
 /**
- * select_ops - Function to execute options
+ * hash_finder - Function that find # in the line.
+ * @s: line to read
  *
- * @stack: address of double linked list
- *
+ * Return: 1 if find # and 0 if not find.
  */
-
-void select_ops(stack_t **stack)
+int hash_finder(char **s)
 {
 	int i = 0;
-	instruction_t options[] = {
-		{"push", monty_push},
-		{"pall", },
-		{"pint", },
-		{"pop", },
-		{"swap", },
-		{"add", },
-		{"nop", },
-		{"stack", },
-		{"queue", },
-		{NULL, NULL}
-	};
 
-	while (options[i].opcode)
-	{
-		if (!strcmp(options[i].opcode, head->command_argument[0]))
-		{
-			(*options[i].f)(stack, head->line_number);
-			break;
-		}
-		i++;
-	}
-	if (!options[i].opcode)
-	{
-		dprintf(STDERR_FILENO, "L%d: unknown instruction %s\n",
-				head->line_number, head->command_argument[0]);
-		freell(stack);
-		exit(EXIT_FAILURE);
-	}
-}
-
-
-
-
-
-
-/**
- * free_all - Function free all linked list
- *
- * @stack: address of double linked list
- *
- */
-
-
-
-void free_all(stack_t **stack)
-{
-	stack_t *temp = NULL;
-	comandos *temp2 = NULL;
-
-	for (; *stack; *stack = (*stack)->next, free(temp))
-		temp = *stack;
-	for (; head; head = head->next, free(temp2))
-	{
-		temp2 = head;
-		free(head->command_argument[1]);
-		free(head->command_argument[0]);
-	}
+	for (; (*s)[i] && ((*s)[i] == ' ' || (*s)[i] == '\t'); i++)
+		;
+	if ((*s)[i] == '#')
+		return (1);
+	for (i = 0; (*s)[i] && (*s)[i] != '#'; i++)
+		;
+	(*s)[i] = '\0';
+	return (0);
 }

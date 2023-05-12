@@ -37,6 +37,16 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+/**
+ * struct commands - function struct
+ * @line_number: The line number where the command appears in the script
+ * @command_arguments: imput strig
+ * @mode: The mode of the command. 
+ *
+ * Description: opcode and its function
+ * for stack, queues, LIFO, FIFO
+ */
+
 
 typedef struct commands
 {
@@ -46,13 +56,25 @@ typedef struct commands
 	struct commands *next;
 } comandos;
 
-extern comandos *head;
 
-void monty_push(stack_t **stack, unsigned int line_number);
-void monty_push(stack_t **stack, unsigned int line_number);
+/* prototypes */
+
+extern comandos *head;
+comandos *command_generator(comandos **head, char *s, int i);
+
 int hash_finder(char **s);
-void free_all(stack_t **stack);
 void select_ops(stack_t **stack);
 
+void monty_push(stack_t **stack, unsigned int line_number);
+void monty_pall(stack_t **stack, unsigned int line_number);
+void monty_pint(stack_t **stack, unsigned int line_number);
+void monty_pop(stack_t **stack, unsigned int line_number);
+void monty_swap(stack_t **stack, unsigned int line_number);
+void monty_add(stack_t **stack, unsigned int line_number);
+void monty_nop(stack_t **stack, unsigned int line_number);
+
+int is_int(char *s);
+void push_q(stack_t **stack, unsigned int line_number);
+void free_all(stack_t **stack);
 
 #endif
