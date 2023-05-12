@@ -7,7 +7,7 @@
  * @i: line number of the script
  * Return: new node, NULL if it fails.
  */
-comandos *command_generator(comandos **head, char *s, int i);
+comandos *command_generator(comandos **head, char *s, int i)
 {
 	comandos *temp = *head, *new = NULL;
 	char *str;
