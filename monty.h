@@ -60,6 +60,7 @@ typedef struct commands
 /* prototypes */
 
 extern comandos *head;
+
 comandos *command_generator(comandos **head, char *s, int i);
 
 int hash_finder(char **s);

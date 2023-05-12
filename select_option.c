@@ -15,8 +15,8 @@ comandos *command_generator(comandos **head, char *s, int i)
 	new = malloc(sizeof(comandos));
 	if (!new)
 		return (NULL);
-	new->comandos[0] = strdup(strtok(s, " \t"));
-	if (!(new->comandos[0]))
+	new->command_argument[0] = strdup(strtok(s, " \t"));
+	if (!(new->command_argument[0]))
 	{
 		free(new);
 		return (NULL);
@@ -24,16 +24,16 @@ comandos *command_generator(comandos **head, char *s, int i)
 	str = strtok(NULL, " \t");
 	if (str)
 	{
-		new->comandos[1] = strdup(str);
-		if (!(new->comandos[1]))
+		new->command_argument[1] = strdup(str);
+		if (!(new->command_argument[1]))
 		{
-			free(new->comandos[1]);
+			free(new->command_argument[1]);
 			free(new);
 			return (NULL);
 		}
 	}
 	else
-	new->comandos[1] = NULL;
+	new->command_argument[1] = NULL;
 	new->line_number = i;
 	new->next = NULL;
 	new->mode = 0;
