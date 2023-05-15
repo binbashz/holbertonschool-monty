@@ -85,5 +85,5 @@ Usage: nop
 
 ## Authors
 
-* [Nicolás Valles] [https://github.com/NicoV00]
-* [Mauricio Correa] [https://github.com/binbashz]
+* [Nicolás Valles] https://github.com/NicoV00
+* [Mauricio Correa] https://github.com/binbashz
